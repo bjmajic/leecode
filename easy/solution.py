@@ -97,9 +97,80 @@ class Solution(object):
                     cnt += 1
         return cnt <= 1
 
+    def romanToInt(self, s):
+        """
 
+        :param s:
+        :return:
+        """
+        roman_int_dict = {
+            'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000
+        }
+        int_value = 0
+        current_char = s[0]
+        for next_char in s[1:]:
+            if roman_int_dict[current_char] < roman_int_dict[next_char]:
+                int_value -= roman_int_dict[current_char]
+            else:
+                int_value += roman_int_dict[current_char]
+            current_char = next_char
 
+        int_value += roman_int_dict[current_char]
 
+        return int_value
+
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        length = len(strs[0])
+        counts = len(strs)
+        lcp = ''
+        flag = True
+        for i in range(length):
+            for j in range(counts-1):
+                if i < len(strs[j]) and i < len(strs[j+1]) and strs[j][i] == strs[j+1][i]:
+                    continue
+                else:
+                    flag = False
+                    break
+            if flag:
+                lcp += strs[0][i]
+            else:
+                break
+
+        return lcp
+
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        if len(s) % 2 != 0:
+            return False
+
+        stack = list()
+        pair_dict = {
+            ']': '[',
+            '}': '{',
+            ')': '('
+        }
+        for item in s:
+            if item in list(pair_dict.values()):
+                stack.append(item)
+            else:
+                if len(stack) == 0:
+                    return False
+                else:
+                    if pair_dict[item] == stack.pop():
+                        continue
+                    else:
+                        return False
+        if len(stack) == 0:
+            return True
+        else:
+            return False
 
 
 
@@ -111,6 +182,7 @@ if __name__ == '__main__':
     nums = [2, 7, 11, 15]
     target = 9
     # ret_value = my_obj.towsum(nums, target)
-    ret_value = my_obj.isPalindrome(121)
+    # ret_value = my_obj.isPalindrome(121)
+    ret_value = my_obj.romanToInt('III')
     print(ret_value)
 
